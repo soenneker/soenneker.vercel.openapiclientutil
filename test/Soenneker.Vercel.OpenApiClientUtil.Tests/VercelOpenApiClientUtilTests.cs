@@ -1,20 +1,19 @@
 using Soenneker.Vercel.OpenApiClientUtil.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Vercel.OpenApiClientUtil.Tests;
 
-[Collection("Collection")]
-public sealed class VercelOpenApiClientUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public sealed class VercelOpenApiClientUtilTests : HostedUnitTest
 {
     private readonly IVercelOpenApiClientUtil _openapiclientutil;
 
-    public VercelOpenApiClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public VercelOpenApiClientUtilTests(Host host) : base(host)
     {
         _openapiclientutil = Resolve<IVercelOpenApiClientUtil>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
