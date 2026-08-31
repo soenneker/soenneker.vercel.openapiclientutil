@@ -43,6 +43,6 @@
     <ItemGroup>
         <PackageReference Include="Soenneker.Vercel.HttpClients" Version="4.0.90" />
         <PackageReference Include="Soenneker.Vercel.OpenApiClient" Version="4.0.125" />
-        <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.826" />
+        <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.829" />
     </ItemGroup>
 </Project>
