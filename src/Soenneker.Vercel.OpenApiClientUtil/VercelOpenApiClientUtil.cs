@@ -1,35 +1,27 @@
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
-using Soenneker.Extensions.Configuration;
 using Soenneker.Extensions.ValueTask;
 using Soenneker.Vercel.HttpClients.Abstract;
 using Soenneker.Vercel.OpenApiClientUtil.Abstract;
 using Soenneker.Vercel.OpenApiClient;
-using Soenneker.Kiota.GenericAuthenticationProvider;
 using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Vercel.OpenApiClientUtil;
 
-///<inheritdoc cref="IVercelOpenApiClientUtil"/>
 public sealed class VercelOpenApiClientUtil : IVercelOpenApiClientUtil
 {
     private readonly AsyncSingleton<VercelOpenApiClient> _client;
 
-    public VercelOpenApiClientUtil(IVercelOpenApiHttpClient httpClientUtil, IConfiguration configuration)
+    public VercelOpenApiClientUtil(IVercelOpenApiHttpClient httpClientUtil)
     {
         _client = new AsyncSingleton<VercelOpenApiClient>(async token =>
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
-            var apiKey = configuration.GetValueStrict<string>("Vercel:ApiKey");
-            string authHeaderValueTemplate = configuration["Vercel:AuthHeaderValueTemplate"] ?? "Bearer {token}";
-            string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
-
-            var requestAdapter = new HttpClientRequestAdapter(new GenericAuthenticationProvider(headerValue: authHeaderValue), httpClient: httpClient);
+            var requestAdapter = new HttpClientRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient);
 
             return new VercelOpenApiClient(requestAdapter);
         });
@@ -40,18 +32,11 @@ public sealed class VercelOpenApiClientUtil : IVercelOpenApiClientUtil
         return _client.Get(cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
         _client.Dispose();
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
         return _client.DisposeAsync();
