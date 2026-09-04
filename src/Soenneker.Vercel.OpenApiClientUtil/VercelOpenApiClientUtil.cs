@@ -11,6 +11,7 @@ using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Vercel.OpenApiClientUtil;
 
+/// <inheritdoc cref="IVercelOpenApiClientUtil" />
 public sealed class VercelOpenApiClientUtil : IVercelOpenApiClientUtil
 {
     private readonly AsyncSingleton<VercelOpenApiClient> _client;
