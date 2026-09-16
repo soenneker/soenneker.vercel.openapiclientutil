@@ -41,7 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Soenneker.Vercel.HttpClients" Version="4.0.124" />
+        <PackageReference Include="Soenneker.Vercel.HttpClients" Version="4.0.126" />
         <PackageReference Include="Soenneker.Vercel.OpenApiClient" Version="4.0.147" />
     </ItemGroup>
 </Project>
